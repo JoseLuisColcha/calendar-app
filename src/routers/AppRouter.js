@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { LoginPage } from '../auth/LoginPage'
-import { CaledarPage } from '../calendar/CaledarPage'
+
+import { CaledarPage } from '../components/calendar/CaledarPage'
+import { LoginPage } from '../components/auth/LoginPage'
 
 export const AppRouter = () => {
 	return (
