@@ -1,35 +1,39 @@
-import { Navbar } from '../ui/Navbar'
-import { Calendar, momentLocalizer } from 'react-big-calendar'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
 import moment from 'moment'
 import 'moment/locale/es'
-import { CalendarEvent } from './CalendarEvent'
 import { useState } from 'react'
-import { CalendarModal } from './CalendarModal'
-import { messages } from '../../helpers/calendar-messages-es'
+import { Calendar, momentLocalizer } from 'react-big-calendar'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useDispatch, useSelector } from 'react-redux'
+import { eventClearActiveEvent, eventSetActive } from '../../actions/events'
 import { uiOpenModal } from '../../actions/ui'
-import { eventSetActive, eventUpdated } from '../../actions/events'
+import { messages } from '../../helpers/calendar-messages-es'
 import { AddNewFab } from '../ui/AddNewFab'
+import { DeleteEventFab } from '../ui/DeleteEventFab'
+import { Navbar } from '../ui/Navbar'
+import { CalendarEvent } from './CalendarEvent'
+import { CalendarModal } from './CalendarModal'
 
 moment.locale('es')
 const localizer = momentLocalizer(moment)
 
 export const CaledarPage = (event, start, end, isSelected) => {
 	const dispatch = useDispatch()
-	const { events } = useSelector(state => state.calendar)
+	const { events, activeEvent } = useSelector(state => state.calendar)
 
 	const [lastView, setLastView] = useState(
 		localStorage.getItem('lastView') || 'month'
 	)
 
-	const onDoubleClick = e => {
+	const onDoubleClick = () => {
 		dispatch(uiOpenModal())
-		
 	}
-
+	
 	const onSelectEvent = e => {
 		dispatch(eventSetActive(e))
+	}
+
+	const onSelectSlot = () => {
+		dispatch(eventClearActiveEvent())
 	}
 
 	const onViewChange = e => {
@@ -63,12 +67,15 @@ export const CaledarPage = (event, start, end, isSelected) => {
 				messages={messages}
 				eventPropGetter={evenStyleGetter}
 				onDoubleClickEvent={onDoubleClick}
+				onSelectSlot={onSelectSlot}
 				onSelectEvent={onSelectEvent}
 				onView={onViewChange}
+				selectable={true}
 				view={lastView}
 				components={{ event: CalendarEvent }}
 			/>
 			<AddNewFab />
+			{activeEvent && <DeleteEventFab />}
 			<CalendarModal />
 		</div>
 	)
