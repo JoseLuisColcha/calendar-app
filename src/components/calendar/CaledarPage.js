@@ -9,7 +9,7 @@ import { CalendarModal } from './CalendarModal'
 import { messages } from '../../helpers/calendar-messages-es'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiOpenModal } from '../../actions/ui'
-import { eventSetActive } from '../../actions/events'
+import { eventSetActive, eventUpdated } from '../../actions/events'
 import { AddNewFab } from '../ui/AddNewFab'
 
 moment.locale('es')
@@ -25,6 +25,7 @@ export const CaledarPage = (event, start, end, isSelected) => {
 
 	const onDoubleClick = e => {
 		dispatch(uiOpenModal())
+		
 	}
 
 	const onSelectEvent = e => {
