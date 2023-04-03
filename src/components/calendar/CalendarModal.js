@@ -5,7 +5,11 @@ import { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiCloseModal } from '../../actions/ui'
-import { eventAddNew, eventClearActiveEvent } from '../../actions/events'
+import {
+	eventAddNew,
+	eventClearActiveEvent,
+	eventUpdated,
+} from '../../actions/events'
 
 const customStyles = {
 	content: {
@@ -99,13 +103,17 @@ export const CalendarModal = () => {
 			return setTitleValid(false)
 		}
 
-		dispatch(
-			eventAddNew({
-				...formValues,
-				id: new Date().getTime(),
-				user: { _id: '123', name: 'Fernando' },
-			})
-		)
+		if (activeEvent) {
+			dispatch(eventUpdated(formValues))
+		} else {
+			dispatch(
+				eventAddNew({
+					...formValues,
+					id: new Date().getTime(),
+					user: { _id: '123', name: 'Fernando' },
+				})
+			)
+		}
 
 		setTitleValid(true)
 		closeModal()
