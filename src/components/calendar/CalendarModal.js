@@ -7,8 +7,8 @@ import Modal from 'react-modal'
 import Swal from 'sweetalert2'
 
 import {
-	eventAddNew,
 	eventClearActiveEvent,
+	eventStartAddNew,
 	eventUpdated,
 } from '../../actions/events'
 import { uiCloseModal } from '../../actions/ui'
@@ -57,9 +57,8 @@ export const CalendarModal = () => {
 	}, [activeEvent, setFormValues])
 
 	const handleInputChange = e => {
-
 		const { name, value } = e.target
-		
+
 		setFormValues({
 			...formValues,
 			[name]: value,
@@ -109,16 +108,7 @@ export const CalendarModal = () => {
 		if (activeEvent) {
 			dispatch(eventUpdated(formValues))
 		} else {
-			dispatch(
-				eventAddNew({
-					...formValues,
-					id: new Date().getTime(),
-					user: {
-						_id: '123',
-						name: 'Fernando',
-					},
-				})
-			)
+			dispatch(eventStartAddNew(formValues))
 		}
 
 		setTitleValid(true)
