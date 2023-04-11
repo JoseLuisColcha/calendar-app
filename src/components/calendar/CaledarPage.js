@@ -52,7 +52,7 @@ export const CaledarPage = (event, start, end, isSelected) => {
 	}
 
 	const evenStyleGetter = (event, start, end, isSelected) => {
-		console.log(event)
+		
 		const style = {
 			backgroundColor: uid === event.user._id ? '#367CF7' : '#465660',
 			borderRadius: '0px',
