@@ -16,7 +16,6 @@ export const eventStartAddNew = event => {
 					_id: uid,
 					name,
 				}
-				console.log(event)
 				dispatch(eventAddNew(event))
 			}
 		} catch (error) {
@@ -49,7 +48,6 @@ export const eventStartUpdate = event => {
 			if (body.ok) {
 				dispatch(eventUpdated(event))
 			} else {
-				console.log('error')
 				Swal.fire('Error', body.msg, 'error')
 			}
 		} catch (error) {
@@ -63,7 +61,39 @@ const eventUpdated = event => ({
 	payload: event,
 })
 
-export const eventDeleted = () => ({
+export const eventStartDeleted = event => {
+	return async (dispatch, getState) => {
+		const { id } = getState().calendar.activeEvent
+
+		try {
+			const resp = await fetchWithToken(`events/${id}`, {}, 'DELETE')
+			const body = await resp.json()
+
+			if (body.ok) {
+				Swal.fire({
+					title: 'Are you sure?',
+					text: "You won't be able to revert this!",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes, delete it!',
+				}).then(result => {
+					if (result.isConfirmed) {
+						Swal.fire('Deleted!', 'Your event has been deleted.', 'success')
+					}
+				})
+				dispatch(eventDeleted())
+			} else {
+				Swal.fire('Error', body.msg, 'error')
+			}
+		} catch (error) {
+			console.log(error)
+		}
+	}
+}
+
+const eventDeleted = () => ({
 	type: types.eventDeleted,
 })
 
@@ -84,4 +114,8 @@ export const eventStartLoading = () => {
 const eventLoaded = events => ({
 	type: types.eventLoaded,
 	payload: events,
+})
+
+export const eventLogout = () => ({
+	type: types.eventLogout,
 })

@@ -8,17 +8,17 @@ export const LoginPage = () => {
 	const dispatch = useDispatch()
 
 	const [formLoginValues, handleLoginInputChange] = useForm({
-		lEmail: 'maria.conejo@epn.edu.ec',
-		lPassword: '123drfrr',
+		lEmail: '',
+		lPassword: '',
 	})
 
 	const { lEmail, lPassword } = formLoginValues
 
 	const [formRegisterValues, handleRegisterInputChange] = useForm({
-		rName: 'Maria',
-		rEmail: 'maria.conejo@epn.edu.ec',
-		rPassword1: '123drfrr',
-		rPassword2: '123drfrr',
+		rName: '',
+		rEmail: '',
+		rPassword1: '',
+		rPassword2: '',
 	})
 
 	const { rName, rEmail, rPassword1, rPassword2 } = formRegisterValues
